@@ -1,0 +1,3 @@
+[submodule "team-act"]
+	path = activity-api
+	url = https://github.com/nhojp/activity-api.git
