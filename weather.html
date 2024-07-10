@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Data</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-PtbRiZtHbdEyzW02Zk51Cv2xU5BpAR1rZScqs6sh10x7ly1RVeJbZlPInVxD1Qx8b2WlGe8ngiOXW03+yosN3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0; /* Light gray background */
+        }
+        .weather-container {
+            margin-bottom: 20px;
+            background-color: #fff; /* White background for containers */
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Subtle shadow effect */
+        }
+        .weather-container h2 {
+            margin-bottom: 10px;
+            color: #333; /* Dark gray heading */
+        }
+        .data-row {
+            margin-bottom: 5px;
+            color: #555; /* Medium gray text */
+        }
+        .table-wrapper {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        .clickable-row {
+            cursor: pointer;
+        }
+        .highlight {
+            background-color: #e0e0e0; /* Light gray highlight */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4 mb-4">Weather Data</h1>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="weather-container" id="current-weather">
+                    <h2><i class="fas fa-clock"></i> Current Weather</h2>
+                    <div class="data-row"><span id="current-day"></span>, <span id="current-date"></span></div>
+                    <div class="data-row"><i class="fas fa-clock"></i> Time: <span id="current-time"></span></div>
+                    <div class="data-row"><i class="fas fa-thermometer-half"></i> Temperature: <span id="current-temperature"></span> °C</div>
+                    <div class="data-row"><i class="fas fa-wind"></i> Wind Speed: <span id="current-wind-speed"></span> m/s</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="weather-container" id="hourly-weather">
+                    <h2><i class="fas fa-clock"></i> Hourly Weather</h2>
+                    <div class="table-wrapper">
+                        <table class="table table-bordered table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th><i class="fas fa-calendar-day"></i> Day</th>
+                                    <th><i class="fas fa-clock"></i> Time</th>
+                                    <th><i class="fas fa-thermometer-half"></i> Temperature (°C)</th>
+                                    <th><i class="fas fa-tint"></i> Humidity (%)</th>
+                                    <th><i class="fas fa-wind"></i> Wind Speed (m/s)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="hourly-data"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies (optional for certain components) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-8CkBEQFlDR0RcO7gr9WGP7ZqQ7gtdA53ecqJXZ2w8SbXiUnsBOzXqbNYI5vX3RD9" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"></script>
+
+    <!-- Font Awesome JS (optional, if you need to use it for dynamic icon changes) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" integrity="sha512-LIS5Zfl0kWlA5AcA7rCyVHdQcRG+gc/8B5+dxx+Gf9sLONZ1NjWkZS3RgMTyCBlpCrUp6CmtQkR7LqQXodR3Mg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        // Function to fetch weather data from the API
+        async function fetchWeatherData() {
+            try {
+                const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                const data = await response.json();
+                displayCurrentWeather(data.current);
+                displayHourlyWeather(data.hourly);
+            } catch (error) {
+                console.error('Error fetching weather data:', error.message);
+            }
+        }
+
+        // Function to display current weather data
+        function displayCurrentWeather(current) {
+            const currentDateTime = new Date(current.time);
+            document.getElementById('current-day').textContent = getDayOfWeek(currentDateTime);
+            document.getElementById('current-date').textContent = currentDateTime.toLocaleDateString();
+            document.getElementById('current-time').textContent = currentDateTime.toLocaleTimeString();
+            document.getElementById('current-temperature').textContent = current.temperature_2m;
+            document.getElementById('current-wind-speed').textContent = current.wind_speed_10m;
+        }
+
+        // Function to display hourly weather data
+        function displayHourlyWeather(hourly) {
+            const hourlyData = document.getElementById('hourly-data');
+            hourlyData.innerHTML = ''; // Clear previous data
+            for (let i = 0; i < hourly.time.length; i++) {
+                const row = document.createElement('tr');
+                const hourlyDateTime = new Date(hourly.time[i]);
+                row.classList.add('clickable-row'); // Add class for clickability
+                row.setAttribute('data-index', i); // Set data attribute to store index
+                row.innerHTML = `
+                    <td><span id="day-${i}"></span>, ${hourlyDateTime.toLocaleDateString()}</td>
+                    <td><span id="time-${i}"></span></td>
+                    <td>${hourly.temperature_2m[i]}</td>
+                    <td>${hourly.relative_humidity_2m[i]}</td>
+                    <td>${hourly.wind_speed_10m[i]}</td>
+                `;
+                hourlyData.appendChild(row);
+                document.getElementById(`day-${i}`).textContent = getDayOfWeek(hourlyDateTime);
+                document.getElementById(`time-${i}`).textContent = hourlyDateTime.toLocaleTimeString();
+            }
+
+            // Add click event listener to each row
+            const rows = document.querySelectorAll('.clickable-row');
+            rows.forEach(row => {
+                row.addEventListener('click', () => {
+                    const index = row.getAttribute('data-index');
+                    highlightRow(index);
+                    displayCurrentHourlyWeather(hourly, index);
+                });
+            });
+        }
+
+        // Function to display current hourly weather details on top
+        function displayCurrentHourlyWeather(hourly, index) {
+            const hourlyDateTime = new Date(hourly.time[index]);
+            document.getElementById('current-day').textContent = getDayOfWeek(hourlyDateTime);
+            document.getElementById('current-date').textContent = hourlyDateTime.toLocaleDateString();
+            document.getElementById('current-time').textContent = hourlyDateTime.toLocaleTimeString();
+            document.getElementById('current-temperature').textContent = hourly.temperature_2m[index];
+            document.getElementById('current-wind-speed').textContent = hourly.wind_speed_10m[index];
+        }
+
+        // Function to get day of the week
+        function getDayOfWeek(date) {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            return days[date.getDay()];
+        }
+
+        // Function to highlight clicked row
+        function highlightRow(index) {
+            const rows = document.querySelectorAll('.clickable-row');
+            rows.forEach(row => {
+                row.classList.remove('highlight');
+            });
+            rows[index].classList.add('highlight');
+        }
+
+        // Fetch weather data when the page loads
+        fetchWeatherData();
+    </script>
+</body>
+</html>
