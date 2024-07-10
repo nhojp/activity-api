@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philippines Holidays Calendar</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1D5B1B;
+            margin: 0;
+            color: #fff;
+        }
+
+        .container {
+            display: flex;
+            width: 800px;
+            height: 450px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .info-side {
+            flex: 1;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #1F1F1F;
+        }
+
+        .info-side h2 {
+            font-size: 100px;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .info-side p {
+            font-size: 20px;
+            margin: 10px 0 0;
+            font-weight: 400;
+        }
+
+        .calendar-side {
+            width: 500px;
+            padding: 20px;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column; /* Added for better alignment */
+        }
+
+        #calendar {
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            color: #333;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .fc-center h2 {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .calendar-nav {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+
+        .calendar-nav button {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+
+        .toggle-description {
+            margin-top: 10px;
+            background-color: #4CAF50; /* Green background */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+
+        .toggle-description:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+        
+        .event-description {
+            display: none;
+            margin-top: 10px;
+        }
+        
+        .event-description.active {
+            display: block;
+        }
+    </style>
+    <!-- Calendar Design -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@3.10.2/dist/fullcalendar.min.css" rel="stylesheet" />
+    <!-- Display the Calendar of Javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.10.2/dist/fullcalendar.min.js"></script>
+</head>
+<body> 
+    <!-- Displays the current date, day of the week, and time. -->
+    <div class="container"> 
+        <div class="info-side"> 
+            <h2 id="current-date"></h2>
+            <p id="current-day"></p>
+            <p id="current-time"></p>
+        </div>
+        <div class="calendar-side">
+            <div class="calendar-nav">
+                <button id="prev-month">Prev</button>
+                <h2 id="calendar-title" class="fc-center">Loading...</h2>
+                <button id="next-month">Next</button>
+                <button id="today">Today</button>
+            </div>
+            <div id="calendar" class="calendar-container"></div>
+            <button id="toggle-description" class="toggle-description">Toggle Event Description</button>
+            <div id="event-description" class="event-description"></div>
+        </div>
+    </div>
+
+    <script> 
+        $(document).ready(function() {
+            // Update the date display
+            function updateDateDisplay() {
+                const currentDate = new Date();
+                const day = currentDate.getDate();
+                const dayOfWeek = currentDate.toLocaleString('default', { weekday: 'long' });
+                const time = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                $('#current-date').text(day);
+                $('#current-day').text(dayOfWeek.toUpperCase());
+                $('#current-time').text(time);
+            }
+
+            updateDateDisplay();
+            setInterval(updateDateDisplay, 1000); // Update every second of the date
+
+            // Initialize FullCalendar
+            const calendar = $('#calendar').fullCalendar({
+                header: {
+                    left: '',
+                    center: 'title',
+                    right: ''
+                },
+                events: function(start, end, timezone, callback) {
+                    const apiKey = '8ByzfyTU9jmggSEh8UqKt0ep3fGEvmbR'; // my api key
+                    const country = 'PH';
+                    const currentYear = new Date().getFullYear();
+                    const nextYear = currentYear + 1;
+                    const years = [currentYear, nextYear];
+                    const events = [];
+
+                    let requests = [];
+                    years.forEach(year => {
+                        requests.push($.ajax({
+                            url: `https://calendarific.com/api/v2/holidays?api_key=${apiKey}&country=${country}&year=${year}`,
+                            dataType: 'json'
+                        }));
+                    });
+
+                    $.when.apply($, requests).done(function(...responses) {
+                        responses.forEach(response => {
+                            let data = response[0];
+                            data.response.holidays.forEach(holiday => {
+                                events.push({
+                                    title: holiday.name,
+                                    start: holiday.date.iso,
+                                    description: holiday.description
+                                });
+                            });
+                        });
+                        callback(events);
+                    });
+                },
+              
+                eventClick: function(calEvent, jsEvent, view) {
+                    $('#event-description').text(calEvent.description);
+                    $('#event-description').toggleClass('active');
+                },
+                
+                viewRender: function(view, element) {
+                    $('#calendar-title').text(view.title);
+                }
+            });
+
+            // Handle next month button click
+            $('#next-month').on('click', function() {
+                calendar.fullCalendar('next');
+            });
+
+            // Handle prev month button click
+            $('#prev-month').on('click', function() {
+                calendar.fullCalendar('prev');
+            });
+
+            // Handle today button click
+            $('#today').on('click', function() {
+                calendar.fullCalendar('today');
+            });
+
+            // Handle toggle description button click
+            $('#toggle-description').on('click', function() {
+                $('#event-description').toggleClass('active');
+            });
+        });
+    </script>
+</body>
+</html>
