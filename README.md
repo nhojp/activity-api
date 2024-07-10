@@ -12,4 +12,10 @@ Open the link https://nhojp.github.io/activity-api/ and freely browse the websit
 - Event Calendar PH - https://calendarific.com/account/dashboard
 - Weather Forecast PH - https://api.open-meteo.com/v1/forecast
 - Riddles - https://riddles-api.vercel.app/
-
+## Technology Used
+- HTML
+- Bootstrap
+- CSS
+- JavaScript
+## How to install?
+type in your bash `git clone https://github.com/nhojp/activity-api.git`
