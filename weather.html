@@ -9,8 +9,11 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-PtbRiZtHbdEyzW02Zk51Cv2xU5BpAR1rZScqs6sh10x7ly1RVeJbZlPInVxD1Qx8b2WlGe8ngiOXW03+yosN3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
+                @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
+            
+            font-family: 'Montserrat', sans-serif;
             margin: 20px;
             background-color: #f0f0f0; /* Light gray background */
         }
@@ -45,14 +48,39 @@
             left: 0;
             z-index: -1; /* Place canvas behind other elements */
         }
+
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Super I</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="nba.html">NBA </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="calendar.html">Calendar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="weather.html">Weather<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Riddles.html">Calendar</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <div class="container">
-        <h1 class="mt-4 mb-4">Weather Data</h1>
+        <h1 class="mt-4 mb-4 text-white font-weight-bold">Weather Data</h1>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="weather-container" id="current-weather">
                     <h2><i class="fas fa-clock"></i> Current Weather</h2>
                     <div class="data-row"><span id="current-day"></span>, <span id="current-date"></span></div>
@@ -61,7 +89,7 @@
                     <div class="data-row"><i class="fas fa-wind"></i> Wind Speed: <span id="current-wind-speed"></span> m/s</div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <div class="weather-container" id="hourly-weather">
                     <h2><i class="fas fa-clock"></i> Hourly Weather</h2>
                     <div class="table-wrapper">

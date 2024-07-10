@@ -7,8 +7,12 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
         body {
             display: flex;
+            font-family: 'Montserrat', sans-serif;
+
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -31,18 +35,22 @@
             left: 0;
             z-index: -1; /* Place canvas behind other elements */
         }
+        .card{
+            height: 145px;
+
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1 class="text-center mb-5 text-white">Team Super I - API Activity</h1>
+    <h1 class="text-center mb-5 text-white font-weight-bold">Team Super I - API Activity</h1>
 
     <div class="row justify-content-center">
         <div class="col-md-3">
             <div class="card card-button text-center shadow" onclick="redirectToNBA()">
                 <div class="card-body">
-                    <h5 class="card-title">NBA Page</h5>
+                    <h5 class="card-title font-weight-bold">NBA Page</h5>
                     <p class="card-text">Click here to explore NBA players.</p>
                 </div>
             </div>
@@ -50,7 +58,7 @@
         <div class="col-md-3">
             <div class="card card-button text-center shadow" onclick="redirectTocalendar()">
                 <div class="card-body">
-                    <h5 class="card-title">Philippines Calendar</h5>
+                    <h5 class="card-title font-weight-bold">Philippines Calendar</h5>
                     <p class="card-text">Click here to explore the Philippines Calendar.</p>
                 </div>
             </div>
@@ -58,7 +66,7 @@
         <div class="col-md-3">
             <div class="card card-button text-center shadow" onclick="redirectToweather()">
                 <div class="card-body">
-                    <h5 class="card-title">Philippines Weather Forecast</h5>
+                    <h5 class="card-title font-weight-bold">Weather Forecast</h5>
                     <p class="card-text">Click here to explore the Philippines Weather.</p>
                 </div>
             </div>
@@ -66,7 +74,7 @@
         <div class="col-md-3">
             <div class="card card-button text-center shadow" onclick="redirectToriddles()">
                 <div class="card-body">
-                    <h5 class="card-title">Riddles</h5>
+                    <h5 class="card-title font-weight-bold">Riddles</h5>
                     <p class="card-text">Click here to explore some riddles.</p>
                 </div>
             </div>
@@ -89,6 +97,7 @@
     }function redirectToriddles() {
         window.location.href = 'Riddles.html'; // Redirect to NBA page
     }
+
     const canvas = document.createElement("canvas");
     const c = canvas.getContext("2d");
 
