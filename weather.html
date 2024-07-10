@@ -14,22 +14,22 @@
         body {
             
             font-family: 'Montserrat', sans-serif;
-            background-color: #f0f0f0; /* Light gray background */
+            background-color: #f0f0f0; 
         }
         .weather-container {
             margin-bottom: 20px;
-            background-color: #fff; /* White background for containers */
+            background-color: #fff; 
             padding: 15px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Subtle shadow effect */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
         }
         .weather-container h2 {
             margin-bottom: 10px;
-            color: #333; /* Dark gray heading */
+            color: #333;
         }
         .data-row {
             margin-bottom: 5px;
-            color: #555; /* Medium gray text */
+            color: #555; 
         }
         .table-wrapper {
             max-height: 60vh;
@@ -39,13 +39,13 @@
             cursor: pointer;
         }
         .highlight {
-            background-color: #e0e0e0; /* Light gray highlight */
+            background-color: #e0e0e0; 
         }
         canvas {
             position: fixed;
             top: 0;
             left: 0;
-            z-index: -1; /* Place canvas behind other elements */
+            z-index: -1; 
         }
 
     </style>
@@ -147,12 +147,12 @@
         // Function to display hourly weather data
         function displayHourlyWeather(hourly) {
             const hourlyData = document.getElementById('hourly-data');
-            hourlyData.innerHTML = ''; // Clear previous data
+            hourlyData.innerHTML = ''; 
             for (let i = 0; i < hourly.time.length; i++) {
                 const row = document.createElement('tr');
                 const hourlyDateTime = new Date(hourly.time[i]);
-                row.classList.add('clickable-row'); // Add class for clickability
-                row.setAttribute('data-index', i); // Set data attribute to store index
+                row.classList.add('clickable-row'); 
+                row.setAttribute('data-index', i); 
                 row.innerHTML = `
                     <td><span id="day-${i}"></span>, ${hourlyDateTime.toLocaleDateString()}</td>
                     <td><span id="time-${i}"></span></td>
