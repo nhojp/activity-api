@@ -119,16 +119,17 @@
             display: block;
         }
     </style>
-    <!-- FullCalendar CSS -->
+    <!-- Calendar Design -->
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@3.10.2/dist/fullcalendar.min.css" rel="stylesheet" />
-    <!-- FullCalendar JS -->
+    <!-- Display the Calendar of Javascript -->
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.10.2/dist/fullcalendar.min.js"></script>
 </head>
-<body>
-    <div class="container">
-        <div class="info-side">
+<body> 
+    <!-- Displays the current date, day of the week, and time. -->
+    <div class="container"> 
+        <div class="info-side"> 
             <h2 id="current-date"></h2>
             <p id="current-day"></p>
             <p id="current-time"></p>
@@ -146,7 +147,7 @@
         </div>
     </div>
 
-    <script>
+    <script> 
         $(document).ready(function() {
             // Update the date display
             function updateDateDisplay() {
@@ -161,7 +162,7 @@
             }
 
             updateDateDisplay();
-            setInterval(updateDateDisplay, 1000); // Update every second
+            setInterval(updateDateDisplay, 1000); // Update every second of the date
 
             // Initialize FullCalendar
             const calendar = $('#calendar').fullCalendar({
@@ -171,8 +172,8 @@
                     right: ''
                 },
                 events: function(start, end, timezone, callback) {
-                    const apiKey = '8ByzfyTU9jmggSEh8UqKt0ep3fGEvmbR'; // Replace with your Calendarific API key
-                    const country = 'PH'; // Philippines country code
+                    const apiKey = '8ByzfyTU9jmggSEh8UqKt0ep3fGEvmbR'; // my api key
+                    const country = 'PH';
                     const currentYear = new Date().getFullYear();
                     const nextYear = currentYear + 1;
                     const years = [currentYear, nextYear];
@@ -200,12 +201,12 @@
                         callback(events);
                     });
                 },
-                // Event click handler
+              
                 eventClick: function(calEvent, jsEvent, view) {
                     $('#event-description').text(calEvent.description);
                     $('#event-description').toggleClass('active');
                 },
-                // Initial title setting
+                
                 viewRender: function(view, element) {
                     $('#calendar-title').text(view.title);
                 }
