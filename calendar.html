@@ -170,8 +170,8 @@
                     left: '',
                     center: 'title',
                     right: ''
-                },
-                events: function(start, end, timezone, callback) {
+                }, 
+                events: function(start, end, timezone, callback) { // display the event in the philippines in calendar
                     const apiKey = '8ByzfyTU9jmggSEh8UqKt0ep3fGEvmbR'; // my api key
                     const country = 'PH';
                     const currentYear = new Date().getFullYear();
@@ -181,7 +181,7 @@
 
                     let requests = [];
                     years.forEach(year => {
-                        requests.push($.ajax({
+                        requests.push($.ajax({ // api request
                             url: `https://calendarific.com/api/v2/holidays?api_key=${apiKey}&country=${country}&year=${year}`,
                             dataType: 'json'
                         }));
