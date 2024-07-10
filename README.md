@@ -1,7 +1,7 @@
 # ACTIVITY API
 Activity about creating a website integrating an API.
 ## How to Launch
-Open the link `https://nhojp.github.io/activity-api/` and freely browse the website.
+Open the link https://nhojp.github.io/activity-api/ and freely browse the website.
 ## Members
 Manjac, John Paulmar L.
 Sacdalan, Ferdinand Paulo F.
